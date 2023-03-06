@@ -4,10 +4,11 @@
 
 
 def is_pangram(text: str) -> bool:
-    ALPHA = set('abcdefghijklmnopqrstuvwxyzñ')
-    text = text.lower()
-    letters = set()
-    for characters in text:
-        if characters in ALPHA:
-            letters.add(characters)
-    return ALPHA.issubset(letters)
+    ALPHA = set("abcdefghijklmnopqrstuvwxyz")
+    text = set(''.join(text.lower().split()))
+    print(ALPHA)
+    print(text)
+    if text == ALPHA:
+        return True
+    else:
+        return False
