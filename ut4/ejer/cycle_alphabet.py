@@ -2,20 +2,14 @@
 # ALFABETO CIRCULAR
 # *****************
 
+# Utilizar función generadora
+# Utilizar módulo for i in range(n):
+#                     (n + i) % n
+def gen_nums(max_letters):
+    for i in range(max_letters):
+        index_text = i % max_letters
+        yield index_text
 
-def run(max_letters: int) -> str:
-    cycle_alphabet = []
-    ALPHA = list("abcdefghijklmnopqrstuvwxyz")
-    for i in range(max_letters):   
-        if ALPHA[i] == ALPHA[i -1]:
-            ALPHA[-1] = ALPHA[0] 
-        cycle_alphabet.append(ALPHA[i])
-            
-            
- 
-    text = "".join(cycle_alphabet)
-    print(text)
-    return text
 
 
 if __name__ == "__main__":
