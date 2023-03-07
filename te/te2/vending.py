@@ -7,11 +7,6 @@ from pathlib import Path
 
 def run(operations_path: Path) -> bool:
     status_path = 'data/vending/status.dat'
-    """
-    Lee el archivo de operaciones y devuelve un diccionario que mapea
-    los códigos de producto a una tupla con la cantidad en stock y el precio,
-    así como el saldo actual de la máquina.
-    """
     products = {}
     balance = 0
     
@@ -63,9 +58,9 @@ def run(operations_path: Path) -> bool:
                 # Reponer dinero
                 amount = int(tokens[1])
                 balance += amount
-    """
-    Escribe el estado final de la máquina en el archivo de salida.
-    """
+
+   # Escribe el estado final de la máquina en el archivo de salida.
+
     with open(status_path, 'w') as f:
         f.write(f'{balance}\n')
         for code in sorted(products):
