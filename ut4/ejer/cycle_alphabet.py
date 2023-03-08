@@ -9,12 +9,11 @@
 def gen_nums(max_letters):
     ALPHA = 'abcdefghijklmnopqrstuvwxyz'
     for i in range(max_letters):
-        index_text = i % max_letters
+        index_text = i % len(ALPHA)
         yield ALPHA[index_text]
 
-def run(max_letters):
-    for letters in gen_nums(max_letters):
-        return letters
+def run(max_letters): 
+    return ''.join(list(gen_nums(max_letters)))
 
 if __name__ == "__main__":
     run(0)
