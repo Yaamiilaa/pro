@@ -22,18 +22,7 @@ def order(op: int, tokens: int):
         quantity = int(tokens[2])
         price = products.get(code, (0, 0))[1]
         total_price = quantity * price
-        user_money = int(tokens[3])
-        if code not in products:
-            # Producto no existe
-            print(f"E1: PRODUCT NOT FOUND ({code})")
-        elif quantity > products[code][0]:
-            # Stock insuficiente
-            print(f"E2: UNAVAILABLE STOCK ({code})")
-        elif user_money < total_price:
-            # Dinero insuficiente
-            print(f"E3: NOT ENOUGH USER MONEY ({code})")
-        else:
-            # Operación exitosa
+        if code in products:
             products[code] = (products[code][0] - quantity, products[code][1])
             balance += total_price
     return products, balance
