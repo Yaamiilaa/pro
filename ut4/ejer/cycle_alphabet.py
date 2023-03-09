@@ -13,7 +13,7 @@ def gen_nums(max_letters):
         yield ALPHA[index_text]
 
 def run(max_letters): 
-    return ''.join(list(gen_nums(max_letters)))
+    return ''.join(gen_nums(max_letters))
 
 if __name__ == "__main__":
     run(0)
