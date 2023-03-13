@@ -2,11 +2,15 @@
 # CUADRADO MÁGICO
 # ***************
 
-def gen_index(values: list[list[int]]):
-    for value_files in range(len(values)):
-        for value_colums in range(value_files):
-            
-            
-print(gen_index([[8, 30,  28, 21, 26, 20, 42], [45, 33, 23,25, 27, 17, 5]]))
 def is_magic_square(values):
-    return 
+    n = len(values)
+    magic_sum = (n * (n ** 2 + 1)) // 2
+    if any(sum(file) != magic_sum for file in values):
+        return False
+    if any(sum(file[i] for file in values) != magic_sum for i in range(n)):
+        return False
+    if sum(values[i][i] for i in range(n)) != magic_sum:
+        return False
+    if sum(values[i][n-1-i] for i in range(n)) != magic_sum:
+        return False
+    return True
