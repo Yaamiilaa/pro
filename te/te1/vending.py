@@ -70,7 +70,7 @@ def restock_money(ops: str, tokens: int, products: dict, balance: int):
         return balance, products
 
 
-def write_data(status_path: Path, balance: int, products: dict, quantity, price):
+def write_data(status_path: Path, balance: int, products: dict):
     with open(status_path, "w") as f:
         f.write(f"{balance}\n")
         for code in sorted(products):
@@ -85,14 +85,11 @@ def run(operations_path: Path) -> bool:
     products = {}
     status_path = "data/vending/status.dat"
     ops, tokens = read_data(operations_path)
-    code = tokens[1]
-    quantity = int(tokens[2])
     products, balance = order(ops, tokens, balance, products)
-    price = products.get(code, (0, 0))[1]
-    products = restok_product(ops, tokens,products)
-    products = change_price(ops, tokens, products)
-    balance, products = restock_money(ops, tokens, products, balance)
-    write_data(status_path, balance, products, quantity, price)
+    restok_product(ops, tokens,products)
+    change_price(ops, tokens, products)
+    restock_money(ops, tokens, products, balance)
+    write_data(status_path, balance, products)
     return filecmp.cmp(status_path, "data/vending/.expected", shallow=False)
 
 
