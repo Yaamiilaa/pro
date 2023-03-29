@@ -6,23 +6,28 @@ class OS:
     count_files = 0
     delete_files = 0
     status = "Apagado"
+    errors = {
+        "E1": "El archivo ya está en el sistema de archivos",
+        "E2": "El archivo no se encuentra en el sistema de archivos",
+    }
 
     def __init__(self, file_system=[], version="6.0.1"):
         self.file_system = file_system
         self.version = version
 
-    # MÉTODO DECORADOR QUE DICE SI EL SO ESTÁ ENCENDIDO O APAGADO
     @staticmethod
     def boot(method):
+        """método decorador que dice si el sistema operativo esá apagado o encendido"""
+
         def wrapper(self, *args, **kwargs):
             print(f"El sistema operativo esta {OS.status}")
             return method(self, *args, **kwargs)
 
         return wrapper
 
-    # APLICAMOS EL DECORADOR
     @boot
     def switch_status(self):
+        """Aplicamos el decorador"""
         if OS.status == "Apagado":
             OS.status = "Encendido"
         else:
@@ -33,35 +38,35 @@ class OS:
             self.file_system.append(file)
             OS.count_files += 1
         else:
-            print(f"El fichero {file} ya está en el sistema de ficheros")
+            print(OS.errors["E1"])
 
     def remove_file_system(self, file):
         if file in self.file_system:
             self.file_system.remove(file)
             OS.delete_files += 1
         else:
-            print(f"El fichero {file} no se encuentra en el sistema de ficheros")
+            print(OS.errors["E2"])
 
     def get_file_system(self):
         for file in self.file_system:
             print(file)
 
-    # MÉTODO ESTÁTICO QUE MUESTRA LOS TIPOS DE KERNEL
     @staticmethod
     def get_types_of_kernel() -> list:
+        """métodos estáticos que muestra los tipos de kernel"""
         return ["Monolithic", "Microkernel", "Hybrid"]
 
     def get_version(self):
         print(self.version)
 
-    # MÉTODO DE CLASE QUE CUENTA LOS ARCHIVOS AÑADIDOS
     @classmethod
     def get_count_files(cls):
+        """método de clase que cuenta los archivos añadidos"""
         return cls.count_files
 
-    # MÉTODO DE CLASE QUE CUENTA LOS ARCHIVOS BORRADOS
     @classmethod
     def get_delete_files(cls):
+        """método de clase que cuenta los archivos borrados"""
         return cls.delete_files
 
 
@@ -72,11 +77,9 @@ l.switch_status()
 l.add_file_system("etc/passwd")
 l.add_file_system("etc/passwd")
 l.get_file_system()
-print("******")
 l.remove_file_system("etc/passwd")
 l.remove_file_system("etc/passwd")
 print(OS.get_types_of_kernel())
 l.get_version()
 print(OS.get_count_files())
-print("*******")
 print(OS.get_delete_files())
