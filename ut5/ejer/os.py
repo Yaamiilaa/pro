@@ -11,14 +11,16 @@ class OS:
         self.file_system = file_system
         self.version = version
 
+    # MÉTODO DECORADOR QUE DICE SI EL SO ESTÁ ENCENDIDO O APAGADO
     @staticmethod
-    def boot(method):  # Método decorador que indica si el SO está apagado o encendido
+    def boot(method):
         def wrapper(self, *args, **kwargs):
             print(f"El sistema operativo esta {OS.status}")
             return method(self, *args, **kwargs)
 
         return wrapper
 
+    # APLICAMOS EL DECORADOR
     @boot
     def switch_status(self):
         if OS.status == "Apagado":
@@ -44,18 +46,21 @@ class OS:
         for file in self.file_system:
             print(file)
 
-    @staticmethod  # Método estático que muestra los tipos de kernel
+    # MÉTODO ESTÁTICO QUE MUESTRA LOS TIPOS DE KERNEL
+    @staticmethod
     def get_types_of_kernel() -> list:
         return ["Monolithic", "Microkernel", "Hybrid"]
 
     def get_version(self):
         print(self.version)
 
-    @classmethod  # Método de clase que cuenta los archivos añadidos
+    # MÉTODO DE CLASE QUE CUENTA LOS ARCHIVOS AÑADIDOS
+    @classmethod
     def get_count_files(cls):
         return cls.count_files
 
-    @classmethod  # Método de clase que cuenta los archivos borrados
+    # MÉTODO DE CLASE QUE CUENTA LOS ARCHIVOS BORRADOS
+    @classmethod
     def get_delete_files(cls):
         return cls.delete_files
 
