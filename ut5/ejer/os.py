@@ -1,3 +1,5 @@
+# Crear una clase de un sistema operativo que tenga los tipos de kernel, una opción de encendido y de apagado, la
+# versión y un sistema de archivos al que le puedes añadir o borrar dichos archivos. 
 class OS:
     count_files = 0
     delete_files = 0
@@ -28,21 +30,22 @@ class OS:
         for file in self.file_system:
             print(file)
 
-    @staticmethod
+    @staticmethod # Método estático que muestra los tipos de kernel
     def get_types_of_kernel() -> list:
         return ["Monolithic", "Microkernel", "Hybrid"]
 
     def get_version(self):
         print(self.version)
 
-    @classmethod
+    @classmethod # Método de clase que cuenta los archivos añadidos 
     def get_count_files(cls):
         print(cls.count_files)
 
-    @classmethod
+    @classmethod # Método de clase que cuenta los archivos borrados
     def get_delete_files(cls):
         print(cls.delete_files)
 
+# PRUEBAS 
 
 l = OS()
 l.boot()
