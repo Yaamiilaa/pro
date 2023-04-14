@@ -125,4 +125,4 @@ class Date:
 
     # operador > dice si una fecha es mayor que otra. Para ello debemos comparar todos los datos introducidos
 
-    # operador < dice si una fecha es menor que otra. Lo mismo que el operador de arriba.
+    # operador < dice si una fecha es menor que otra. Lo mismo que el operador de arriba
