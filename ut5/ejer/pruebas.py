@@ -1,6 +1,7 @@
 class Droid:
     def __init__(self, name: str):
         self.name = name
+        matraca = 0
 
 
 class ProtocolDroid(Droid):
