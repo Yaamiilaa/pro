@@ -1,9 +1,7 @@
 class InfinityList:
     def __init__(self, *values: int, fill_value=None):
-        self.values = []
+        self.values = list(values)
         self.fill_value = fill_value
-        for value in values:
-            self.values.append(value)
 
     def __getitem__(self, index: int):
         return self.values[index]
@@ -12,9 +10,8 @@ class InfinityList:
         return len(self.values)
 
     def __setitem__(self, index: int, value: int):
-        if index > len(self.values):
-            for i in range(len(self.values), index + 1):
-                self.values.append(self.fill_value)
+        for _ in range(len(self.values), index + 1):
+            self.values.append(self.fill_value)
         self.values[index] = value
 
 
