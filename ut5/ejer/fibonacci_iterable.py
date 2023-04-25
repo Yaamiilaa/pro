@@ -6,7 +6,6 @@ class Fibonacci:
         return self
 
     def __next__(self):
-        if 
         a = 0
         print(a)
         b = 1
