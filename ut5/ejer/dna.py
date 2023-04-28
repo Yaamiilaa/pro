@@ -50,8 +50,7 @@ class DNA:
         result_sequence = ""
         for self_base, other_base in zip(self.sequence, other.sequence):
             result_sequence += max(self_base, other_base)
-        if len(self.sequence) > len(other.sequence):
-            
+
         return DNA(result_sequence)
 
     @staticmethod
@@ -60,8 +59,3 @@ class DNA:
 
     def dump_from_file(self, path: str):
         pass
-
-
-dna1 = DNA("TTGATGA")
-dna2 = DNA("AGTTGA")
-print(dna1 + dna2)
