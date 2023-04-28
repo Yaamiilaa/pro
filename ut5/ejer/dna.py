@@ -59,3 +59,13 @@ class DNA:
 
     def dump_from_file(self, path: str):
         pass
+
+    def __getitem__(self):
+        pass
+
+    def __setitem__(self):
+        """Si la base no existe se pone a"""
+        pass
+
+
+# multiplicacion tienen que ser las bases iguales si no no se añaden
