@@ -35,7 +35,7 @@ class IntegerStack:
         """Vuelca la pila a un fichero. Cada item en una línea"""
         with open(path, "w") as f:
             for element in self.items:
-                f.write(element + "\n")
+                f.write(str(element) + "\n")
 
     @classmethod
     def load_from_file(cls, path: str) -> IntegerStack:
