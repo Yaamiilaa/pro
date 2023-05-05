@@ -40,3 +40,4 @@ class DNA:
             if base == self.cytosine:
                 total_cytosine += 1
         return total_cytosine
+
