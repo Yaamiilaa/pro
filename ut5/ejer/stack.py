@@ -36,14 +36,21 @@ class IntegerStack:
     def dump_to_file(self, path: str) -> None:
         """Vuelca la pila a un fichero. Cada item en una línea"""
         with open(path, "w") as f:
-            for element in self.items:
-                f.write(str(element) + "\n")
+            f.write("\n".join(str(element) for element in self.items))
 
     @classmethod
     def load_from_file(cls, path: str) -> IntegerStack:
         """Crea una pila desde un fichero. Si la pila se llena al ir añadiendo elementos
         habrá que expandir con los valores por defecto"""
-        ...
+        new_stack = IntegerStack()
+        with open(path, "r") as f:
+            elements = f.readlines
+            elements.strip()
+            new_stack.push(elements)
+            if new_stack.is_full():
+                new_stack.expand()
+
+            return new_stack
 
     def __getitem__(self, index: int) -> int:
         """Devuelve el elemento de la pila en el índice indicado"""
@@ -59,15 +66,15 @@ class IntegerStack:
 
     def __str__(self):
         """Cada elemento en una línea distinta empezando por el TOP de la pila"""
-        elements = ""
-        for element in self.items:
-            elements += f"{element}\n"
-        return elements
+        elements = (str(element) for element in self.items)
+        return "\n".join(elements)
 
     def __add__(self, other: IntegerStack) -> IntegerStack:
         """La segunda pila va "encima" de la primera"""
-        new_stack = IntegerStack()
-
+        new_stack_size = other.max_size + self.max_size
+        new_stack = IntegerStack(max_size=new_stack_size)
+        new_stack.items = other.items + self.items
+        return new_stack
 
     def __iter__(self) -> IntegerStackIterator:
         return IntegerStackIterator(self)
@@ -83,7 +90,7 @@ class IntegerStackIterator:
             raise StopIteration
         element = self.stack[self.pointer]
         self.pointer += 1
-        return element 
+        return element
 
 
 a = IntegerStack()
