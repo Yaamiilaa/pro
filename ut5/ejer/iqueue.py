@@ -45,7 +45,8 @@ class IntegerQueue:
         """Vuelca la cola a un fichero.
         - Todos los elementos en una misma línea separados por comas.
         - El primer elemento del fichero corresponde con el HEAD de la cola."""
-        ...
+        with open(path, 'w') as f:
+            f.write(','.join(str(element) for element in self.items))
 
     @classmethod
     def load_from_file(cls, path: str) -> IntegerQueue:
@@ -54,7 +55,13 @@ class IntegerQueue:
         - El primer elemento del fichero corresponde con el HEAD de la cola.
         - Si la cola se llena al ir añadiendo elementos habrá que expandir con los valores
         por defecto"""
-        ...
+        with open(path, 'r') as f:
+            new_queue = IntegerQueue()
+            for line in f:
+                if new_queue.is_full():
+                    new_queue.expand()
+                new_queue.items.append(int(line.strip()))
+            return new_queue
 
     def __getitem__(self, index: int) -> int:
         """Devuelve el elemento de la cola en el índice indicado"""
@@ -70,22 +77,30 @@ class IntegerQueue:
 
     def __str__(self):
         """Todos los elementos de la cola separados por coma empezando por el HEAD"""
-        ...
+        elements = (str(element) for element in self.items)
+        return ",".join(elements)
 
     def __add__(self, other: IntegerQueue) -> IntegerQueue:
         """Sumar dos colas.
         - La segunda cola va "detrás" de la primera
         - El tamaño máximo de la cola resultante es la suma de los tamaños
         máximos de cada cola."""
-        ...
+        new_queue_size = other.max_size + self.max_size
+        new_queue = IntegerQueue(max_size=new_queue_size)
+        new_queue.items = other.items + self.items
 
     def __iter__(self) -> IntegerQueueIterator:
-        ...
+        return IntegerQueueIterator(self)
 
 
 class IntegerQueueIterator:
     def __init__(self, queue: IntegerQueue):
-        ...
+        self.queue = queue
+        self.pointer = 0
 
     def __next__(self) -> int:
-        ...
+        if self.pointer >= len(self.queue):
+            raise StopIteration
+        element = self.queue[self.pointer]
+        self.pointer += 1
+        return element
