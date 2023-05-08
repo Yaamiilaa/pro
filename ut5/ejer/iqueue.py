@@ -45,8 +45,8 @@ class IntegerQueue:
         """Vuelca la cola a un fichero.
         - Todos los elementos en una misma línea separados por comas.
         - El primer elemento del fichero corresponde con el HEAD de la cola."""
-        with open(path, 'w') as f:
-            f.write(','.join(str(element) for element in self.items))
+        with open(path, "w") as f:
+            f.write(",".join(str(element) for element in self.items))
 
     @classmethod
     def load_from_file(cls, path: str) -> IntegerQueue:
@@ -55,12 +55,13 @@ class IntegerQueue:
         - El primer elemento del fichero corresponde con el HEAD de la cola.
         - Si la cola se llena al ir añadiendo elementos habrá que expandir con los valores
         por defecto"""
-        with open(path, 'r') as f:
+        with open(path, "r") as f:
             new_queue = IntegerQueue()
             for line in f:
                 if new_queue.is_full():
                     new_queue.expand()
-                new_queue.items.append(int(line.strip()))
+                line_split = line.split()
+                new_queue.items.append(line_split)
             return new_queue
 
     def __getitem__(self, index: int) -> int:
@@ -85,9 +86,10 @@ class IntegerQueue:
         - La segunda cola va "detrás" de la primera
         - El tamaño máximo de la cola resultante es la suma de los tamaños
         máximos de cada cola."""
-        new_queue_size = other.max_size + self.max_size
+        new_queue_size = self.max_size + other.max_size
         new_queue = IntegerQueue(max_size=new_queue_size)
-        new_queue.items = other.items + self.items
+        new_queue.items = self.items + other.items
+        return new_queue
 
     def __iter__(self) -> IntegerQueueIterator:
         return IntegerQueueIterator(self)
