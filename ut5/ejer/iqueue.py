@@ -55,13 +55,13 @@ class IntegerQueue:
         - El primer elemento del fichero corresponde con el HEAD de la cola.
         - Si la cola se llena al ir añadiendo elementos habrá que expandir con los valores
         por defecto"""
+        new_queue = IntegerQueue()
         with open(path, "r") as f:
-            new_queue = IntegerQueue()
-            for line in f:
+            line = f.readline().split(",")
+            for element in line:
                 if new_queue.is_full():
                     new_queue.expand()
-                line_split = line.split()
-                new_queue.items.append(line_split)
+                new_queue.enqueue(int(element))
             return new_queue
 
     def __getitem__(self, index: int) -> int:
