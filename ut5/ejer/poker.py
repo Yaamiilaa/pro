@@ -6,10 +6,12 @@ def load_card_glyphs(path: str = "cards.dat") -> dict[str, str]:
     y los valores serán cadenas de texto con los glifos de las
     cartas sin ningún separador"""
     with open(path, "r") as f:
+        cards = {}
         for lines in f:
-            line = lines.strip()
-            symbols = line.split(":")
-            glyphs = line.split(",")
+            symbols, glyphs = lines.strip().split(":")
+            cards_glyphs = glyphs.replace(",", "")
+            cards[symbols] = cards_glyphs
+        return cards
 
 
 class Card:
@@ -35,13 +37,29 @@ class Card:
 
         - self.suit deberá almacenar el palo de la carta '♣◆❤♠'.
         - self.value deberá almacenar el valor de la carta (1-13)"""
-        ...
+        self.value = value
+        self.suit = suit
+        if self.value not in load_card_glyphs():
+            raise InvalidCardError(
+                f"🃏 Invalid card: {repr(suit)} is not a supported suit"
+            )
+        if isinstance(self.value, int):
+            if 1 >= self.value >= 13:
+                raise InvalidCardError(
+                    f"🃏 Invalid card: {repr(value)} is not a supported value"
+                )
+        elif isinstance(value, str):
+            if self.value not in Card.SYMBOLS:
+                raise InvalidCardError(
+                    f"🃏 Invalid card: {repr(value)} is not a supported symbol"
+                )
 
     @property
     def cmp_value(self) -> int:
         """Devuelve el valor (numérico) de la carta para comparar con otras.
         Tener en cuenta el AS."""
-        ...
+        if self.suit is Card.HEARTS:
+            return Card.A_VALUE
 
     def __repr__(self):
         """Devuelve el glifo de la carta"""
