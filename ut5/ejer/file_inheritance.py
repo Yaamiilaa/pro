@@ -5,7 +5,7 @@ class File:
     def add_content(self, content: str):
         if content not in self.contents:
             self.contents.append(content)
-    
+    @property
     def size(self):
         size = (len(v) for v in self.contents)
         return sum(size)
@@ -40,7 +40,3 @@ class VideoFile(MediaFile):
 {media_file_info}
 Dimensions: {self.dimensions}'''
     
-mp4 = VideoFile('/home/python/vanrossum.mp4', 'h264', (23.5454, 31.4343), 487, (1920, 1080))
-mp4.add_content('audio/ogg')
-mp4.add_content('video/webm')
-print(mp4.info())
