@@ -3,7 +3,7 @@
 import re
 
 
-def find_url(url):
+def find_url(url: str) -> list[str]:
     regex = r"\b[https$]\S*[^,\s\w]*"
     result = re.findall(regex, url)
     return result

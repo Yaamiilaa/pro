@@ -4,7 +4,7 @@
 import re
 
 
-def found_words(text):
+def found_words(text: str) -> list[str]:
     regex = r"\b[aeiou]\S+"
     result = re.findall(regex, text, re.I)
     return result
