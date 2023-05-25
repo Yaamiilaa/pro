@@ -4,7 +4,7 @@
 import re
 
 def is_a_valid_float(number: str) -> bool:
-    regex = '(\d+).(\d+)'
+    regex = '(\d+)[.,](\d+)'
     result = re.search(regex, number) 
     return result is not None
 

@@ -10,4 +10,4 @@ def found_words(text: str) -> list[str]:
     return result
 
 
-print(found_words("Estaré disponible en el +34755142009 el lunes por la tarde"))
+print(found_words("Esto     es  uNa prueba"))
