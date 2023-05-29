@@ -33,7 +33,7 @@ class Task:
     def update(self):
         """Actualiza la tarea (nombre y estado) en la base de datos"""
         Task.cur.execute(
-            f'UPDATE tasks SET name="{self.name}" and done={self.done} WHERE id={self.id}'
+            f'UPDATE tasks SET name="{self.name}", done={self.done} WHERE id={self.id}'
         )
         Task.con.commit()
 
@@ -57,12 +57,14 @@ class Task:
     @classmethod
     def from_db_row(cls, row: sqlite3.Row) -> Task:
         """Construye una nueva tarea a partir de una fila de consulta devuelta por execute()"""
-        pass
+        return Task(row["name"], row["done"], row["id"])
 
     @classmethod
     def get(cls, task_id: int) -> Task:
         """Devuelve un objeto Task desde la consulta a la base de datos"""
-        pass
+        sql = f"Select * from tasks where id={task_id}"
+        result = Task.cur.execute(sql)
+        return cls.from_db_row(result.fetchone())
 
 
 class ToDo:
@@ -88,18 +90,17 @@ class ToDo:
         - Si done = 0 se devuelven las tareas pendientes.
         - Si done = 1 se devuelven las tareas completadas.
         Ojo! Esto es una función generadora."""
-        for row in ToDo.cur.execute("SELECT * FROM tasks"):
+        for row in ToDo.cur.execute(f"SELECT * FROM tasks WHERE done={done}"):
             yield row
 
     def add_task(self, name: str):
         '''Añade la tarea con nombre "name"'''
-        Task(name)
-        Task.save
+        Task(name).save()
 
     def complete_task(self, task_id: int):
         """Marca la tarea con identificador "task_id" como completada"""
-        pass
+        Task.get(task_id).check()
 
     def reopen_task(self, task_id: int):
         """Marca la tarea con identificador "task_id" como pendiente"""
-        pass
+        Task.get(task_id).uncheck()
