@@ -21,16 +21,16 @@ def guess_number():
     random = randint(1, 100)
     counter = 0
     while True:    
-        num = int(input('Give me a number between 1 to 100: '))
+        num = int(input('Dame un número del 1 al 100: '))
         if num > random:
-            print('The number provided is greater than the random number')
+            print('Tu numero es más grande. Pon un número más pequeño')
         elif num < random:    
-            print('The number provided is less than the random number')
+            print('Tu número es más pequeño. Pon un número mas grande')
         else: 
             break
         counter += 1
-    return f'''¡Great! The number is right. 
-Your attempts have been {counter}'''
+    return f'''¡Correcto! Adivinaste el número
+Estos han sido tus intentos {counter}'''
 
         
 print(guess_number())
