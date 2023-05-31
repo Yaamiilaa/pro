@@ -1,19 +1,76 @@
-# Crea una clase llamada "Libro" que represente un libro en una tienda. La clase debe tener los siguientes atributos:
+class Book:
+    def __init__(self, title: str, author: str, age_of_publication: int, copies_available: int):
+        self.title = title
+        self.author = author
+        self.age_of_publication = age_of_publication
+        self.copies_available = copies_available
 
-# Título: el título del libro.
-# Autor: el autor del libro.
-# Precio: el precio del libro.
-# Stock: la cantidad de ejemplares disponibles en el stock.
-# La clase debe tener los siguientes métodos:
+    def book_loan(self, orders: int):
+        if self.copies_available < orders:
+            print('There are not enough stock')
+        else:
+            self.copies_available -= orders
 
-# actualizar_precio(nuevo_precio): recibe un nuevo valor numérico que representa el precio actualizado del libro y lo actualiza.
+    def return_book(self):
+        self.copies_available += 1
 
-# vender_copia(): reduce en 1 la cantidad de ejemplares disponibles en el stock. Si no hay ejemplares disponibles, muestra un mensaje 
-# indicando que el libro está agotado.
-
-# Crea un programa principal en el que instancies objetos de la clase "Libro" y realices las siguientes acciones:
-from random import randint 
-
-
+    def __str__(self) -> str:
+        return f'''Title: {self.title}
+Author: {self.author}
+Age of publication: {self.age_of_publication}
+Copies available: {self.copies_available}'''
 
 
+class User:
+    def __init__(self, name: str, user_id: int):
+        self.name = name 
+        self.user_id = user_id
+        self.book_loans = []
+
+    def show_active_loans(self):
+        return self.book_loans
+
+    def make_loan(self, book):
+        if book.copies_available > 0:
+            book.book_loan(1)
+            self.book_loans.append(book)
+        else:
+            print("No copies available of the book", book.title)
+
+    def return_book_loan(self, book):
+        if book in self.book_loans:
+            book.return_book()
+            self.book_loans.remove(book)
+        else:
+            print("The book", book.title, "is not borrowed by the user.")
+
+
+class Library:
+    def __init__(self, name: str):
+        self.name = name
+        self.books_available = []
+        self.users_register = []
+
+    def show_books(self):
+        return self.books_available
+
+    def show_users(self):
+        return self.users_register
+
+    def register_new_user(self, user):
+        self.users_register.append(user)
+
+    def add_book(self, book):
+        self.books_available.append(book)
+
+    def make_loan(self, user, book):
+        if user in self.users_register:
+            user.make_loan(book)
+        else:
+            print("The user", user.name, "is not registered in the library.")
+
+    def return_book(self, user, book):
+        if user in self.users_register:
+            user.return_book_loan(book)
+        else:
+            print("The user", user.name, "is not registered in the library.")
