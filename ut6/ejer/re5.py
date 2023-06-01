@@ -8,7 +8,7 @@ import re
 
 
 def get_result(numbers: str) -> int | float:
-    regex = r"(?P<num1>\d+)\s*(?P<operator>[\+\-\*\/])\s*(?P<num2>\d+)"
+    regex = r"(?P<num1>\d+)\s*(?P<operator>[+\-*/])\s*(?P<num2>\d+)"
     groups = re.search(regex, numbers)
     num1 = int(groups["num1"])
     num2 = int(groups["num2"])
