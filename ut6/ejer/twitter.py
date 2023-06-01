@@ -66,8 +66,7 @@ class User:
             f"SELECT COUNT(*) FROM user WHERE password='{password}'"
         )
         rows = result.fetchall()
-        if len(rows) > 0:
-            self.logged = not self.logged
+        self.logged = True if len(rows) > 0 else False
 
     def tweet(self, content: str) -> Tweet:
         """Crea un tweet con el contenido indicado y lo almacena en la base de datos.
@@ -77,14 +76,15 @@ class User:
         con el mensaje: User <usuario> is not logged in!
         - Si el tweet supera el límite de caracteres hay que lanzar una excepción de tipo
         TwitterError con el mensaje: Tweet hasta more than 280 chars!"""
-        sql = f"INSERT INTO tweet(content) VALUES '{content}'"
-        self.cur.execute(sql)
-        self.save()
+
         if not self.logged:
             raise TwitterError(f"User {self.username} is not logged")
         if len(content) > MAX_TWEET_LENGTH:
             raise TwitterError("Tweet has more than 280 chars!")
-        return Tweet(content)
+
+        new_tweet = Tweet(content)
+        new_tweet.save(self)
+        return new_tweet
 
     def retweet(self, tweet_id: int) -> Tweet:
         """Crea un retweet con el contenido indicado y lo almacena en la base de datos.
@@ -94,23 +94,34 @@ class User:
         con el mensaje: User <usuario> is not logged in!
         - Si tweet_id no existe en la base de datos hay que lanzar una excepción de tipo
         TwitterError con el mensaje: Tweet with id <id> does not exist!"""
-        pass
+
+        if not self.logged:
+            raise TwitterError(f"User {self.username} is not logged")
+        result = self.cur.execute(f"SELECT COUNT(*) FROM tweet WHERE id={tweet_id}'")
+        rows = result.fetchall()
+        if len(rows) > 0:
+            raise TwitterError(f"Tweet with id {tweet_id} does not exist!")
+
+        retweet = Tweet()
+        retweet.save(self)
+        return retweet
 
     @property
     def tweets(self):
         """Función generadora que devuelve todos los tweets propios del usuario.
         - Lo que se devuelven son objetos de tipo Tweet (usar el método from_db_row)."""
-        pass
+        for row in User.from_db_row():
+            yield row
 
     def __repr__(self):
         """Representa un usuario con el formato:
         <usuario>: <bio>"""
-        pass
+        return f"{self.username}: {self.bio}"
 
     @classmethod
     def from_db_row(cls, row: sqlite3.Row):
         """Crea un objeto de tipo User a partir de una fila de consulta SQL"""
-        pass
+        return cls(row["id"], row["username"], row["password"], row["bio"])
 
 
 class Tweet:
@@ -123,18 +134,24 @@ class Tweet:
         - Si es un retweet el contenido debe ser la cadena vacía.
         """
         self.con = sqlite3.connect(DB_PATH)
-        self.
+        self.con.row_factory = sqlite3.Row
+        self.cur = self.con.cursor()
+        self._content = "" if retweet_from > 0 else content
+        self.retweet_from = retweet_from
+        self.id = tweet_id
 
     @property
     def is_retweet(self) -> bool:
         """Indica si el tweet es un retweet."""
-        pass
+        return self.retweet_from > 0
 
     @property
     def content(self) -> str:
         """Devuelve el contenido del tweet.
         - Si es un retweet el contenido habrá que buscarlo en el tweet retuiteado."""
-        pass
+        if self.is_retweet:
+            sql = "select * from tweet where id = ?"
+            res = self.con.execute(sql, (self.id,))
 
     def save(self, user: User) -> None:
         """Guarda el tweet en la base de datos.
