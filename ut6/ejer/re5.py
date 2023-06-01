@@ -27,7 +27,7 @@ def get_result(numbers: str) -> int | float:
 
 print(
     get_result(
-        """2                         
+        """      2                         
                   /          2"""
     )
 )
