@@ -5,9 +5,9 @@ import re
 
 
 def found_words(text: str) -> list[str]:
-    regex = r"\b[aeiou]\S+"
+    regex = r"\b[aeiou][\w-]+"
     result = re.findall(regex, text, re.I)
     return result
 
 
-print(found_words("Esto     es  uNa prueba"))
+print(found_words("Esto,     es  uN_a pru_eba"))
